@@ -1,0 +1,6 @@
+.DS_Store
+node_modules
+/.svelte-kit
+/package
+src/routes
+src/app.html
