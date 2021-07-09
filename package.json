@@ -1,6 +1,6 @@
 {
   "name": "@imbuejs/svelte",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "nodemon --config nodemon.json -L -e svelte,ts,js,json,cjs --exec 'npm run clean && npm run package && svelte-kit dev'",
