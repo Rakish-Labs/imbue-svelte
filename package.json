@@ -1,6 +1,6 @@
 {
   "name": "@imbuejs/svelte",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "scripts": {
     "dev": "nodemon --config nodemon.json -L -e svelte,ts,js,json,cjs --exec 'npm run clean && npm run package && svelte-kit dev'",
@@ -11,7 +11,7 @@
     "lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --write --plugin-search-dir=. .",
     "package": "svelte-kit package",
-    "clean": "rimraf ./package",
+    "clean": "rimraf ./pkg",
     "deriveMdnData": "ts-node scripts/derivePropertyNamesFromMDN.cjs && prettier --write src/lib/mdn/derived",
     "pre:test": "node scripts/pre-test.cjs",
     "test:cmd": "uvu -r ts-node/register -r jsdom-global/register tests",
@@ -19,8 +19,8 @@
     "test": "nodemon --config nodemon.test.json -L -e svelte,ts,js,json,cjs --exec 'pnpm pre:test && pnpm test:cmd && pnpm post:test'",
     "test:coverage": "npm run pre:test && c8 --include=src/lib npm run test:cmd && npm run post:test",
     "test:report": "c8 report --reporter=text-lcov > coverage.lcov",
-    "prepublish": "npm run package && node scripts/amendPackageExports.cjs",
-    "publish": "npm publish package"
+    "prepublish": "npm run clean && npm run package && node scripts/amendPackageExports.cjs",
+    "publish": "npm publish pkg"
   },
   "devDependencies": {
     "@sveltejs/kit": "next",

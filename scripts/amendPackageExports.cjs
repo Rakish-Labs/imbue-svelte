@@ -1,7 +1,7 @@
 const { readFileSync, writeFileSync } = require('fs')
 const { join } = require('path')
 
-const pkg = JSON.parse(readFileSync(join(__dirname, '../package/package.json')))
+const pkg = JSON.parse(readFileSync(join(__dirname, '../pkg/package.json')))
 
 /** Remove .js extension from exports */
 const processed = Object.keys(pkg.exports).reduce((acc, current) => {
@@ -14,4 +14,4 @@ const processed = Object.keys(pkg.exports).reduce((acc, current) => {
 	return acc
 }, {})
 
-writeFileSync(join(__dirname, '../package/package.json'), JSON.stringify(processed, null, 2))
+writeFileSync(join(__dirname, '../pkg/package.json'), JSON.stringify(processed, null, 2))
