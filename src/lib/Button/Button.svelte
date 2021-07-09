@@ -28,10 +28,10 @@
 	import { browser } from '$app/env'
 	import { css } from '@emotion/css'
 	import Color from 'color'
+	import { themeGroup, prefersColorScheme, theme } from '../Theme/store'
 
 	import DefaultLoader from './DefaultLoader.svelte'
 	import { runtimeValidateProps } from './runtimeValidateProps'
-	import { theme } from '../Theme/store'
 	import { cssInJsToCssDeclarationString } from '../utility/cssInJsToCssDeclarationString'
 
 	import type { ButtonProps, MeaningOptions, HierarchyOptions } from './types'
@@ -153,9 +153,9 @@
 <button
 	bind:this={node}
 	class={cssStyles}
-	on:click={onClick}
-	disabled={disabled || loading}
 	class:loading
+	disabled={disabled || loading}
+	on:click={onClick}
 >
 	{#if loading}
 		{#if Loader}
