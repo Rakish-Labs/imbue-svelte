@@ -1,6 +1,6 @@
 {
   "name": "@imbuejs/svelte",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "dev": "nodemon --config nodemon.json -L -e svelte,ts,js,json,cjs --exec 'npm run clean && npm run package && svelte-kit dev'",
@@ -20,7 +20,7 @@
     "test:coverage": "npm run pre:test && c8 --include=src/lib npm run test:cmd && npm run post:test",
     "test:report": "c8 report --reporter=text-lcov > coverage.lcov",
     "prepublish": "npm run package && node scripts/amendPackageExports.cjs",
-    "publish": "npm publish ./package"
+    "publish": "npm publish package"
   },
   "devDependencies": {
     "@sveltejs/kit": "next",
