@@ -1,4 +1,4 @@
-import { writable, derived, Writable, Readable } from 'svelte/store'
+import { get, writable, derived, Writable, Readable } from 'svelte/store'
 import type { ThemeGroup } from '../types/ThemeGroup'
 import type { Theme } from '../types/Theme'
 import { SessionStorageKeys } from '../types/SessionStorageKeys'
@@ -15,27 +15,29 @@ import { lightTheme as buttonLightTheme } from '../Button/lightTheme'
  * Derive the theme object value from the combined themes for
  * each component
  */
-const lightTheme: Theme = {
+const defaultLightTheme: Theme = {
 	globals: lightThemeGlobals,
 	button: buttonLightTheme,
 }
 
-const darkTheme: Theme = {
+const defaultDarkTheme: Theme = {
 	globals: darkThemeGlobals,
 	button: buttonDarkTheme,
 }
 
 export type PrefersColorScheme = keyof ThemeGroup
 
-export const themeGroup: ThemeGroup = {
-	lightTheme,
-	darkTheme,
+export const defaultThemeGroup: ThemeGroup = {
+	lightTheme: defaultLightTheme,
+	darkTheme: defaultDarkTheme,
 }
+
+export const themeGroup: Writable<ThemeGroup> = writable<ThemeGroup>(defaultThemeGroup)
 
 export const computeInitialColorScheme = (): PrefersColorScheme => {
 	if (typeof window === 'undefined') return 'lightTheme'
 
-	// Prioritize session storage
+	/** Prioritize session storage */
 	if (window.sessionStorage.getItem(SessionStorageKeys.PREFERS_COLOR_SCHEME)) {
 		const storageValue = window.sessionStorage.getItem(SessionStorageKeys.PREFERS_COLOR_SCHEME)
 
@@ -45,6 +47,7 @@ export const computeInitialColorScheme = (): PrefersColorScheme => {
 		}
 	}
 
+	/** Otherwise, use the user's OS preference */
 	return window.matchMedia('(prefers-color-scheme: dark)').matches
 		? ('darkTheme' as const)
 		: ('lightTheme' as const)
@@ -54,7 +57,7 @@ export const prefersColorScheme: Writable<PrefersColorScheme> = writable<Prefers
 	computeInitialColorScheme(),
 )
 
-export const theme: Readable<Theme> = derived(
-	prefersColorScheme,
-	($prefersColorScheme) => themeGroup[$prefersColorScheme],
-)
+export const theme: Readable<Theme> = derived(prefersColorScheme, (themeName: keyof ThemeGroup) => {
+	const value = get(themeGroup)
+	return value ? value[themeName] : undefined
+})
